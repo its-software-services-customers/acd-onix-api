@@ -1,7 +1,13 @@
 FROM php:7.2-apache
 
-##===== Begin build #1
-##===== End build #1
+##===== Begin build lib_wis_core_framework
+WORKDIR /sources
+COPY lib_wis_core_framework lib_wis_core_framework
+RUN find .
+WORKDIR /sources/lib_wis_core_framework
+RUN php onix_core_framework_build.php
+RUN ls -lrt build
+##===== End build lib_wis_core_framework
 
 RUN a2enmod rewrite && a2enmod ssl
 
