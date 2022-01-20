@@ -18,6 +18,10 @@ RUN php -d phar.readonly=0 onix_erp_framework_build.php
 RUN ls -lrt build
 ##===== End build lib_wis_erp_framework
 
+WORKDIR /sources
+COPY gen-version.php gen-version.php
+RUN php gen-version.php
+
 #### Runtime docker image here ###
 FROM php:7.2-apache
 
@@ -55,22 +59,15 @@ RUN mkdir -p /wis/windows
 RUN chown apache2 /wis/system /wis/system/bin /wis/windows
 RUN chgrp apache2 /wis/system /wis/system/bin /wis/windows
 
-COPY --from=builder /sources/lib_wis_core_framework/build/onix_core_framework.phar /wis/system/bin
-COPY --from=builder /sources/lib_wis_erp_framework/build/onix_erp_framework.phar /wis/system/bin
+### Important to put this before COPY --from=builder
 COPY scripts/* /wis/system/bin/
 
+COPY --from=builder /sources/lib_wis_core_framework/build/onix_core_framework.phar /wis/system/bin
+COPY --from=builder /sources/lib_wis_erp_framework/build/onix_erp_framework.phar /wis/system/bin
+COPY --from=builder /sources/build.php /wis/system/bin
+
 RUN find /wis/system/bin/
+RUN cat /wis/system/bin/build.php
 
 COPY alias.conf /tmp
 RUN cat /tmp/alias.conf >> /etc/apache2/apache2.conf
-
-#FROM gcr.io/its-artifact-commons/php-apache:7.2-1
-
-#RUN mkdir -p /wis/system/bin
-#RUN mkdir -p /wis/windows
-#RUN chown apache2 /wis/system /wis/system/bin /wis/windows
-#RUN chgrp apache2 /wis/system /wis/system/bin /wis/windows
-
-
- 
-
