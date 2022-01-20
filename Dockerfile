@@ -1,13 +1,22 @@
 FROM php:7.2-apache
 
-##===== Begin build lib_wis_core_framework
 WORKDIR /sources
 COPY lib_wis_core_framework lib_wis_core_framework
-RUN find .
+COPY lib_wis_erp_framework lib_wis_erp_framework
+
+##===== Begin build lib_wis_core_framework
 WORKDIR /sources/lib_wis_core_framework
+# Set phar.readonly=0 to allow writing PHAR file
 RUN php -d phar.readonly=0 onix_core_framework_build.php
 RUN ls -lrt build
 ##===== End build lib_wis_core_framework
+
+##===== Begin build lib_wis_erp_framework
+WORKDIR /sources/lib_wis_erp_framework
+# Set phar.readonly=0 to allow writing PHAR file
+RUN php -d phar.readonly=0 onix_erp_framework_build.php
+RUN ls -lrt build
+##===== End build lib_wis_erp_framework
 
 RUN a2enmod rewrite && a2enmod ssl
 
