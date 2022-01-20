@@ -18,6 +18,9 @@ RUN php -d phar.readonly=0 onix_erp_framework_build.php
 RUN ls -lrt build
 ##===== End build lib_wis_erp_framework
 
+#### Runtime docker image here ###
+FROM php:7.2-apache
+
 RUN a2enmod rewrite && a2enmod ssl
 
 RUN apt-get update && apt-get install -y \
@@ -47,8 +50,6 @@ RUN echo 'export PORT' >> /etc/apache2/envvars
 COPY ports.conf /etc/apache2
 
 #== Application setup here ===
-FROM php:7.2-apache
-
 RUN mkdir -p /wis/system/bin
 RUN mkdir -p /wis/windows
 RUN chown apache2 /wis/system /wis/system/bin /wis/windows
