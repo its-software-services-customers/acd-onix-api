@@ -1,5 +1,8 @@
 FROM php:7.2-apache
 
+##===== Begin build #1
+##===== End build #1
+
 RUN a2enmod rewrite && a2enmod ssl
 
 RUN apt-get update && apt-get install -y \
@@ -28,7 +31,18 @@ RUN echo ': ${PORT:=80}' >> /etc/apache2/envvars
 RUN echo 'export PORT' >> /etc/apache2/envvars
 COPY ports.conf /etc/apache2
 
+#== Application setup here ===
+RUN mkdir -p /wis/system/bin
+RUN mkdir -p /wis/windows
+RUN chown apache2 /wis/system /wis/system/bin /wis/windows
+RUN chgrp apache2 /wis/system /wis/system/bin /wis/windows
 
+#COPY lib_wis_core_framework/build/onix_core_framework.phar /wis/system/bin
+#COPY lib_wis_erp_framework/build/onix_erp_framework.phar /wis/system/bin
+#COPY app_onix/onix_server/scripts/* /wis/system/bin/
+
+COPY alias.conf /tmp
+RUN cat /tmp/alias.conf >> /etc/apache2/apache2.conf
 
 #FROM gcr.io/its-artifact-commons/php-apache:7.2-1
 
@@ -37,9 +51,6 @@ COPY ports.conf /etc/apache2
 #RUN chown apache2 /wis/system /wis/system/bin /wis/windows
 #RUN chgrp apache2 /wis/system /wis/system/bin /wis/windows
 
-#COPY lib_wis_core_framework/build/onix_core_framework.phar /wis/system/bin
-#COPY lib_wis_erp_framework/build/onix_erp_framework.phar /wis/system/bin
-#COPY app_onix/onix_server/scripts/* /wis/system/bin/
+
  
-#COPY GCloudBuild/alias.conf /tmp
-#RUN cat /tmp/alias.conf >> /etc/apache2/apache2.conf
+
