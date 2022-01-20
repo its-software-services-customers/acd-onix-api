@@ -18,6 +18,6 @@ $_ENV['POST_PARAM_NAME'] = 'DBOSOBJ';
 $_ENV['INPUT_XML_DUMP'] = false;
 
 $_ENV['WIS_CORE_ENCRYPTED'] = true;
-$_ENV['WIS_CORE_MANAGER'] = true;
+$_ENV['WIS_CORE_MANAGER'] = false;
 
 ?>
