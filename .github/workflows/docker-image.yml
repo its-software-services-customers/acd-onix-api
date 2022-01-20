@@ -3,7 +3,7 @@ name: Onix API
 on:
   push:
     branches: [ develop, main ]
-    tags: ['v*.*.*-*']
+    tags: ['v*.*.*']
 
 env:
   ENV_GCR_IMAGE: gcr.io/its-artifact-commons/acd-onix-api
