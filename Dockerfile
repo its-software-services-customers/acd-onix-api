@@ -5,7 +5,7 @@ WORKDIR /sources
 COPY lib_wis_core_framework lib_wis_core_framework
 RUN find .
 WORKDIR /sources/lib_wis_core_framework
-RUN php onix_core_framework_build.php
+RUN php -d phar.readonly=0 onix_core_framework_build.php
 RUN ls -lrt build
 ##===== End build lib_wis_core_framework
 
